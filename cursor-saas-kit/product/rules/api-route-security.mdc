@@ -1,0 +1,50 @@
+---
+description: Secure Next.js Route Handlers and Server Actions — validation, authz, rate limits, secrets
+globs: app/api/**/*.{ts,js}, **/actions/**/*.{ts,js}, lib/api/**/*.{ts,js}
+alwaysApply: false
+---
+
+# API Route Security
+
+## Checklist for every endpoint / Server Action
+
+1. **AuthN** — Who is calling? Session required unless public by design.
+2. **AuthZ** — Does this user own the resource / have the plan?
+3. **Validate input** — `zod` (or equivalent) schemas; reject unknown fields.
+4. **Least data** — Return only needed fields; no stack traces in prod.
+5. **Side effects** — Idempotent where retries happen (webhooks, payments).
+
+## Validation
+
+```ts
+const Body = z.object({
+  projectId: z.string().cuid(),
+  name: z.string().min(1).max(80),
+});
+const parsed = Body.safeParse(await req.json());
+if (!parsed.success) return Response.json({ error: "invalid" }, { status: 400 });
+```
+
+## Secrets & headers
+
+- Read secrets from env; never log them.
+- CSRF: cookie sessions + same-site; for cookie-less APIs use tokens carefully.
+- CORS: lock down if exposing APIs to browsers on other origins.
+- Set security headers via `next.config` / middleware (CSP gradually).
+
+## Rate limiting & abuse
+
+- Rate-limit auth, password reset, and expensive AI routes (IP + user id).
+- Cap payload sizes; timeout outbound fetches.
+- For webhooks: signature verify first (see stripe-webhooks rule).
+
+## Errors
+
+- Map domain errors to stable codes. Log server-side with request id.
+- Do not echo Prisma / SQL errors to clients.
+
+## Anti-patterns
+
+- `dangerouslyAllowSVG` / open redirects without allowlists.
+- Trusting `body.userId` instead of session user id.
+- Disabling auth in production “temporarily”.

@@ -1,0 +1,42 @@
+---
+description: Next.js App Router conventions for SaaS — Server Components, caching, route groups, data fetching
+globs: app/**/*.{ts,tsx,js,jsx}, src/app/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Next.js App Router (SaaS)
+
+Prefer the App Router. Do not introduce Pages Router APIs unless migrating legacy code.
+
+## Defaults
+
+- **Server Components by default.** Add `"use client"` only for interactivity (forms with local state, charts, drag-drop, browser APIs).
+- Colocate UI + data: `page.tsx` / `layout.tsx` / `loading.tsx` / `error.tsx` / `not-found.tsx` in the same segment.
+- Use **route groups** `(marketing)`, `(app)`, `(auth)` for layouts without URL segments.
+- Keep **thin pages**: fetch + compose. Put domain logic in `lib/` or `server/` modules.
+
+## Data fetching
+
+- Fetch in Server Components with `async`/`await`. Prefer `cache()` / React `cache` for request dedupe.
+- Use `unstable_cache` or Next `fetch` cache tags for cross-request caching; invalidate with `revalidateTag` / `revalidatePath` after mutations.
+- Never call Stripe, Prisma, or secret-backed APIs from Client Components. Expose Server Actions or Route Handlers instead.
+- For mutations: prefer **Server Actions** (`"use server"`) with `zod` validation. Return typed results; do not throw raw DB errors to the client.
+
+## Navigation & UX
+
+- Use `next/link` and `next/navigation` (`useRouter`, `redirect`, `notFound`).
+- Streaming: wrap slow sections in `<Suspense>` with meaningful fallbacks.
+- Parallel routes / intercepting routes only when the UX clearly needs them (modals over lists).
+
+## Config & env
+
+- Public env: `NEXT_PUBLIC_*` only for non-secrets.
+- Server-only secrets: never prefix with `NEXT_PUBLIC_`. Import via `server-only` packages where helpful.
+- `middleware.ts` for auth redirects and lightweight checks — not heavy DB work.
+
+## Anti-patterns (refuse these)
+
+- Fetching in `useEffect` for data the server already has.
+- Passing Prisma models or secret objects into Client Components.
+- Global CSS hacks instead of layout-level structure.
+- Mixing `getServerSideProps` / `getStaticProps` into App Router projects.

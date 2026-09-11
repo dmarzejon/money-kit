@@ -1,0 +1,68 @@
+---
+description: Stripe webhooks and subscription lifecycle — verify signatures, idempotency, mapping to Prisma
+globs: app/api/webhooks/**/*.{ts,js}, pages/api/webhooks/**/*.{ts,js}, lib/stripe/**/*.{ts,js}
+alwaysApply: false
+---
+
+# Stripe Webhooks (SaaS)
+
+## Hard rules
+
+1. **Verify signatures** on every request with `stripe.webhooks.constructEvent(rawBody, signature, webhookSecret)`.
+2. Use the **raw request body** (no JSON parse before verify). In App Router: `const raw = await req.text()`.
+3. **Idempotent handlers**: store `event.id` (or use Stripe’s idempotency) and skip duplicates. Webhooks retry.
+4. Respond **200 quickly** after durable write / queue. Do heavy work async if needed; never block on third-party calls that can hang.
+5. Never trust client-reported payment status. **Source of truth = webhooks + Stripe API retrieve**.
+
+## Events to handle (subscriptions)
+
+Minimum set for SaaS billing:
+
+- `checkout.session.completed` — link Stripe customer / subscription to user
+- `customer.subscription.created` / `updated` / `deleted`
+- `invoice.paid` / `invoice.payment_failed`
+- Optional: `customer.subscription.trial_will_end`
+
+Map status → your DB: `active`, `trialing`, `past_due`, `canceled`, `unpaid`.
+
+## Implementation sketch
+
+```ts
+// app/api/webhooks/stripe/route.ts
+import Stripe from "stripe";
+import { headers } from "next/headers";
+
+export const runtime = "nodejs"; // required for constructEvent
+
+export async function POST(req: Request) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-11-20.acacia" });
+  const sig = (await headers()).get("stripe-signature")!;
+  const raw = await req.text();
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(raw, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+  } catch {
+    return new Response("Invalid signature", { status: 400 });
+  }
+  // upsert processed_events by event.id, then switch(event.type) ...
+  return new Response(null, { status: 200 });
+}
+```
+
+## Checkout
+
+- Prefer **Checkout Sessions** or Payment Element; store `client_reference_id` / `metadata.userId`.
+- After success URL: still wait for webhook before unlocking paid features (or retrieve session server-side as interim).
+- Use **Customer Portal** for cancel/upgrade; do not build custom card-update UIs unless required.
+
+## Secrets & local test
+
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, price IDs in env — never commit.
+- Local: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
+- Test mode keys only in non-prod.
+
+## Anti-patterns
+
+- Updating plan from the success page alone.
+- Skipping signature verification in “dev” code that ships.
+- Mutating entitlement without handling `deleted` / `payment_failed`.

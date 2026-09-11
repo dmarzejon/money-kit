@@ -1,0 +1,47 @@
+---
+description: Prisma schema and query patterns for multi-tenant SaaS — migrations, indexes, safe access
+globs: prisma/**/*, **/schema.prisma, lib/db/**/*.{ts,js}, lib/prisma/**/*.{ts,js}
+alwaysApply: false
+---
+
+# Prisma Schema (SaaS)
+
+## Schema habits
+
+- One `User` row is the account; attach `Subscription`, `Customer` (Stripe ids), and domain models with clear FKs.
+- Store Stripe ids as unique strings: `stripeCustomerId`, `stripeSubscriptionId`, `stripePriceId`.
+- Prefer explicit enums for `Plan`, `SubscriptionStatus` over magic strings.
+- Add `createdAt` / `updatedAt` on mutable models. Soft-delete with `deletedAt` only when product needs it.
+- Index what you filter/join: `userId`, email (unique), Stripe ids, foreign keys used in dashboards.
+
+## Multi-tenant safety
+
+- Every tenant-scoped query **must** include `userId` / `orgId` in `where`. Never fetch by id alone if the id is guessable.
+- Use Prisma `extension` or helper `dbForUser(userId)` that injects the tenant filter.
+- Transactions (`$transaction`) for create-user + seed + stripe-customer linkage.
+
+## Migrations
+
+- Never edit applied migrations in shared branches; create a new migration.
+- `prisma migrate dev` locally; `prisma migrate deploy` in CI/prod.
+- After schema change: regenerate client (`prisma generate`). Do not hand-edit generated client.
+
+## Query style
+
+```ts
+// Good: scoped + select only needed fields
+const project = await prisma.project.findFirst({
+  where: { id: projectId, userId },
+  select: { id: true, name: true, updatedAt: true },
+});
+```
+
+- Prefer `findFirst` + tenant filter over `findUnique` when uniqueness is not global.
+- Avoid `include` trees that over-fetch; use `select`.
+- For lists: cursor pagination over huge `skip` on hot paths.
+
+## Anti-patterns
+
+- `findMany()` without tenant scope on user data.
+- Storing plaintext secrets/API keys in Postgres without encryption.
+- Using `db push` as the only prod migration strategy for a paid SaaS.

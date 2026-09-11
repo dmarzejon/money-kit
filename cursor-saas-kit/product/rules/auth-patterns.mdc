@@ -1,0 +1,38 @@
+---
+description: Auth patterns for Next.js SaaS — sessions, protected routes, roles, Auth.js/Clerk-friendly
+globs: app/**/auth/**/*.{ts,tsx}, lib/auth/**/*.{ts,tsx}, middleware.ts, middleware.js
+alwaysApply: false
+---
+
+# Auth Patterns (SaaS)
+
+## Principles
+
+- Authenticate on the **server**. Never trust client-only checks for entitlement.
+- Prefer **session cookies** (httpOnly, secure, sameSite) for first-party web apps.
+- Separate **identity** (who is logged in) from **authorization** (what they can do / paid plan).
+- After login, load subscription status from your DB (synced via Stripe webhooks), not from JWT claims alone unless you refresh them.
+
+## Next.js placement
+
+- `middleware.ts`: redirect unauthenticated users from `(app)` routes; keep logic fast (JWT/session cookie check).
+- Server Components / Server Actions: call `auth()` / `currentUser()` and `notFound()` or `redirect()` when missing.
+- API Route Handlers: reject with `401` if no session; `403` if wrong role/plan.
+
+## Roles & plans
+
+- Roles: e.g. `user`, `admin`. Plans: e.g. `free`, `pro`. Model both; do not overload one field.
+- Gate features with a single helper: `requireUser()`, `requirePlan("pro")`.
+- Admin surfaces: separate route group + explicit role check.
+
+## Provider notes
+
+- **Auth.js (NextAuth)**: Credentials only if you need them; prefer OAuth/magic link. Use database sessions for easier revocation.
+- **Clerk / similar**: Use their server helpers; still sync `userId` into your Prisma `User` on first login webhook/callback.
+- On signup: create Prisma user, optional Stripe customer, default free plan — in one transaction when possible.
+
+## Anti-patterns
+
+- Hiding buttons as the only “auth”.
+- Putting API keys or long-lived tokens in `localStorage` for first-party sessions.
+- Checking plan only in middleware without re-checking on sensitive Server Actions.
