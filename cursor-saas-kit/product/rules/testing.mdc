@@ -1,0 +1,40 @@
+---
+description: Testing habits for Next.js SaaS in Cursor — Vitest unit, Playwright e2e, what to mock
+globs: **/*.{test,spec}.{ts,tsx}, **/e2e/**/*.{ts,tsx}, playwright.config.*
+alwaysApply: false
+---
+
+# Testing (SaaS + Cursor)
+
+## What to test first
+
+1. **Pure domain logic** — pricing, entitlement, plan gates (unit).
+2. **Zod schemas & mappers** — Stripe event → DB shape (unit).
+3. **Critical paths e2e** — signup → checkout → webhook → gated page (Playwright).
+4. Smoke: health of main marketing + app shell.
+
+## Unit (Vitest / Jest)
+
+- Prefer pure functions under `lib/`. Mock Prisma and Stripe at the boundary.
+- Do not snapshot huge React trees; test behavior.
+- Name tests by behavior: `requires pro plan to export`.
+
+## E2E (Playwright)
+
+- Use test mode Stripe + webhook forwarding or recorded fixtures.
+- Seed a user with known plan in DB; avoid depending on real email providers (use Magical / test inbox or bypass in test env).
+- Isolate data per run (`workerId` in email/slug).
+
+## Cursor behavior
+
+When asked to add a feature, also:
+
+- Add or update a unit test for entitlement / validation.
+- Note which e2e path should cover it if payment-related.
+- Never weaken tests to make CI green; fix the code.
+
+## Anti-patterns
+
+- Mocking away the code under test until assertions are meaningless.
+- E2E that only checks `page.title()` for billing flows.
+- Skipping webhook tests entirely for a paid product.

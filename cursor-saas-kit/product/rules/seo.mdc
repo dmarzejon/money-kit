@@ -1,0 +1,37 @@
+---
+description: Next.js Metadata API, OG, sitemap, and SaaS marketing SEO defaults
+globs: app/**/layout.tsx, app/**/page.tsx, app/sitemap.ts, app/robots.ts, **/opengraph-image.*
+alwaysApply: false
+---
+
+# SEO (Next.js SaaS Marketing)
+
+## Metadata API
+
+- Export `metadata` or `generateMetadata` from `layout.tsx` / `page.tsx`.
+- Unique **title** and **description** per indexable page. Template: `%s | ProductName`.
+- Set canonical URLs for marketing pages; avoid duplicate content across www/apex.
+
+## Social & structured data
+
+- Provide OG/Twitter images (static or `opengraph-image.tsx`).
+- JSON-LD for SoftwareApplication / Organization on the homepage when accurate.
+- Do not keyword-stuff. Write for humans first.
+
+## Technical
+
+- `app/sitemap.ts` listing public marketing URLs only (not app dashboard).
+- `app/robots.ts` — disallow `/api`, `/app`, `/dashboard`, auth callbacks.
+- Performance: optimize LCP images with `next/image`; avoid blocking third-party scripts on landing.
+
+## SaaS-specific
+
+- Pricing, docs, blog, and compare pages earn links — give them real content.
+- Gate only the product; keep marketing crawlable.
+- After rebrand, 301 old paths.
+
+## Anti-patterns
+
+- `noindex` on the homepage by accident.
+- Client-only rendered critical copy (empty HTML for crawlers).
+- Fake review schema.
