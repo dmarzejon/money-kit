@@ -1,0 +1,42 @@
+---
+description: High-converting SaaS copy for landing, pricing, onboarding — clear, honest, Cursor-friendly
+globs: app/(marketing)/**/*.{tsx,mdx}, content/**/*.{md,mdx}, **/pricing/**/*
+alwaysApply: false
+---
+
+# SaaS Copywriting
+
+## Voice
+
+- Clear > clever. Say what the product **does** and for **whom** in the first screen.
+- Specific outcomes (“Deploy Stripe webhooks without guessing”) beat vague claims (“10x your workflow”).
+- Honest limitations build trust. No fake scarcity or fabricated testimonials.
+
+## Landing structure
+
+1. **Headline** — persona + outcome
+2. **Subhead** — how / in what time
+3. **Proof** — screenshots, metrics, logos, quotes (real only)
+4. **How it works** — 3 steps
+5. **Features** — benefits tied to pain
+6. **Pricing** — simple; annual toggle if needed
+7. **FAQ** — objections (refund, stack, time-to-value)
+8. **Final CTA**
+
+## Pricing copy
+
+- Name the plan by outcome (`Starter`, `Pro`), not internal codenames.
+- Bullet **inclusions**, not filler. State limits plainly (seats, usage).
+- CTA verb: “Get the pack” / “Start building” — match the product.
+
+## Microcopy
+
+- Errors: say what happened + what to do next.
+- Empty states: one primary action.
+- Onboarding: one goal per screen; celebrate activation (first webhook, first project).
+
+## When Cursor writes copy
+
+- Prefer short paragraphs and scannable bullets.
+- Avoid hype adjectives (revolutionary, seamless, cutting-edge).
+- Keep brand name consistent; don’t invent features not in the product.
