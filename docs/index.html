@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operator Money Kit — AI Affiliate Systems for Solo Creators</title>
+  <meta name="description" content="SOPs, prompt packs, outreach templates, and FTC checklists to run AI-assisted affiliate systems as a solo creator. $29." />
+  <meta property="og:title" content="Operator Money Kit — $29" />
+  <meta property="og:description" content="AI affiliate systems for solo creators. Real SOPs, prompts, and compliance — not fluff." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dmarzejon.github.io/money-kit/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0f14; --surface: #141a22; --surface2: #1a2330; --border: #2a3544;
+      --text: #e8eef6; --muted: #9aabbd; --accent: #3dd6c6; --warm: #f0b429;
+      --radius: 14px; --max: 720px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.65; font-size: 1.05rem;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(61, 214, 198, 0.12), transparent),
+        radial-gradient(ellipse 40% 30% at 90% 10%, rgba(240, 180, 41, 0.06), transparent);
+    }
+    .wrap { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    header { padding: 2rem 0 1rem; }
+    .badge {
+      display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(61, 214, 198, 0.1); border: 1px solid rgba(61, 214, 198, 0.25);
+      padding: 0.35rem 0.75rem; border-radius: 999px; margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+      font-size: clamp(2.1rem, 5vw, 2.85rem); line-height: 1.15;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    .lede { color: var(--muted); font-size: 1.15rem; margin-bottom: 1.75rem; max-width: 38em; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      font-family: inherit; font-weight: 600; font-size: 1rem;
+      padding: 0.85rem 1.4rem; border-radius: 10px; text-decoration: none;
+      border: none; cursor: pointer; transition: transform 0.15s, background 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--accent); color: #06201c;
+      box-shadow: 0 0 0 1px rgba(61, 214, 198, 0.3), 0 8px 24px rgba(61, 214, 198, 0.2);
+    }
+    .btn-primary:hover { background: #5ee0d2; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface); }
+    .price-note { color: var(--muted); font-size: 0.9rem; }
+    .price-note strong { color: var(--warm); }
+    section { margin: 3rem 0; }
+    h2 {
+      font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+      font-size: 1.75rem; margin-bottom: 1.25rem;
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .card-grid { display: grid; gap: 0.85rem; }
+    @media (min-width: 560px) { .card-grid.two { grid-template-columns: 1fr 1fr; } }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.15rem 1.25rem;
+    }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+    .card .icon { font-size: 1.35rem; margin-bottom: 0.5rem; }
+    .pricing {
+      background: linear-gradient(145deg, var(--surface2), var(--surface));
+      border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
+      padding: 1.75rem; text-align: center;
+    }
+    .pricing .amount {
+      font-family: "Instrument Serif", Georgia, serif; font-size: 3.5rem;
+      line-height: 1; margin: 0.5rem 0;
+    }
+    .pricing .amount span { font-size: 1.25rem; color: var(--muted); vertical-align: super; }
+    .pricing ul { list-style: none; text-align: left; margin: 1.5rem auto; max-width: 22rem; }
+    .pricing li {
+      padding: 0.45rem 0 0.45rem 1.5rem; position: relative; color: var(--muted);
+      border-bottom: 1px solid rgba(42, 53, 68, 0.6);
+    }
+    .pricing li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .pricing li:last-child { border-bottom: none; }
+    .faq details {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; margin-bottom: 0.6rem; padding: 0.9rem 1.1rem;
+    }
+    .faq summary { font-weight: 600; cursor: pointer; list-style: none; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; float: right; color: var(--accent); }
+    .faq details[open] summary::after { content: "−"; }
+    .faq details p { color: var(--muted); margin-top: 0.65rem; font-size: 0.95rem; }
+    .disclosure {
+      background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.25);
+      border-radius: var(--radius); padding: 1.15rem 1.25rem; font-size: 0.9rem; color: var(--muted);
+    }
+    .disclosure strong { color: var(--warm); }
+    footer {
+      margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.85rem; text-align: center;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .who { color: var(--muted); }
+    .who strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge">Digital product · Solo operators</div>
+      <h1>Operator Money Kit: <em>AI affiliate systems</em> for solo creators</h1>
+      <p class="lede">
+        SOPs, prompt packs, outreach templates, tracking hygiene, and an FTC disclosure checklist—
+        so you can ship honest affiliate content this week, not “someday.”
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:toolsthathelp@agentmail.to?subject=Operator%20Money%20Kit%20waitlist&body=Hi%20Diego%2C%0A%0AI%20want%20the%20Operator%20Money%20Kit%20(%2429)%20waitlist.%20Notify%20me%20when%20Gumroad%20is%20live.%0A%0AThanks!">Join $29 waitlist</a>
+        <a class="btn btn-ghost" href="https://github.com/dmarzejon/money-kit/blob/main/lead-magnet.md">Free 5 workflows</a>
+      </div>
+      <p class="price-note"><strong>$29</strong> one-time · Gumroad checkout coming soon · Email waitlist for access</p>
+    </header>
+
+    <section>
+      <h2>What’s inside</h2>
+      <div class="card-grid two">
+        <div class="card">
+          <div class="icon">🗺️</div>
+          <h3>System map + SOPs</h3>
+          <p>Offer selection, weekly content engine, and tracking sheet pattern—run as a one-person loop.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⌨️</div>
+          <h3>Prompt packs</h3>
+          <p>Research, comparisons, workflow emails, threads, FAQs, and CTA variants—copy/paste ready.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📬</div>
+          <h3>Outreach templates</h3>
+          <p>Partner managers, creator collabs, and clear affiliate-vs-sponsored positioning.</p>
+        </div>
+        <div class="card">
+          <div class="icon">✅</div>
+          <h3>FTC checklist</h3>
+          <p>Clear disclosures near the CTA, claim hygiene, and a pre-publish gate you can reuse.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Who it’s for</h2>
+      <p class="who">
+        <strong>Solo creators</strong> with a newsletter, YouTube, blog, or social audience who want
+        affiliate revenue without a team—and without spammy “fake review” tactics.
+        If you already use AI tools and need an <strong>operating system</strong>, this is for you.
+      </p>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing</h2>
+      <div class="pricing">
+        <div class="badge">Early access waitlist</div>
+        <div class="amount"><span>$</span>29</div>
+        <p style="color: var(--muted);">One-time · Commercial license for your solo / single-brand use</p>
+        <ul>
+          <li>Full PRODUCT.md playbook</li>
+          <li>6 core prompt packs</li>
+          <li>Outreach + tracking SOPs</li>
+          <li>90-day operator calendar</li>
+          <li>FTC disclosure checklist</li>
+          <li>LICENSE-COMMERCIAL.md</li>
+        </ul>
+        <a class="btn btn-primary" href="mailto:toolsthathelp@agentmail.to?subject=Operator%20Money%20Kit%20waitlist">Email waitlist — toolsthathelp@agentmail.to</a>
+        <p class="price-note" style="margin-top: 1rem;">We’ll reply with purchase link when Gumroad is live.</p>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Is this a course with videos?</summary>
+        <p>No. It’s a dense Markdown kit: SOPs, prompts, and templates you run with ChatGPT/Claude/Cursor. Built for operators who prefer docs over 8-hour courses.</p>
+      </details>
+      <details>
+        <summary>Do you guarantee earnings?</summary>
+        <p>No. Results depend on your audience, offer fit, and consistency. The kit improves process and compliance—not lottery tickets.</p>
+      </details>
+      <details>
+        <summary>Can I use this for client work?</summary>
+        <p>One purchase covers you or one brand. For agency / multi-client use, license per brand or email for a multi-seat quote. See LICENSE-COMMERCIAL.md.</p>
+      </details>
+      <details>
+        <summary>When can I pay on Gumroad?</summary>
+        <p>Soon. Join the waitlist via email and you’ll get the checkout link first. Until then, mailto is the CTA.</p>
+      </details>
+      <details>
+        <summary>Is the free lead magnet enough?</summary>
+        <p>The free 1-pager gives five workflows to run this week. The paid kit adds full SOPs, outreach, calendar, and compliance depth.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Disclosure</h2>
+      <div class="disclosure">
+        <p><strong>About this page.</strong> Operator Money Kit is a digital product sold by Diego Marzejon. This landing is informational. When you buy, you receive a commercial license to use the materials for your own business as described in <code>LICENSE-COMMERCIAL.md</code>.</p>
+        <p style="margin-top: 0.75rem;"><strong>Affiliate note.</strong> Future editions of this site may include affiliate links to tools mentioned in examples. If/when that happens, disclosures will appear next to those links. Income claims are not made; past examples are not promises.</p>
+        <p style="margin-top: 0.75rem;">Educational content only—not legal, tax, or financial advice. Follow FTC endorsement guides and your local rules when you publish affiliate content.</p>
+      </div>
+    </section>
+
+    <section style="text-align: center;">
+      <h2>Ship your first tracked asset this week</h2>
+      <p class="lede" style="margin: 0 auto 1.25rem;">$29 · Waitlist open · Built for solo operators</p>
+      <a class="btn btn-primary" href="mailto:toolsthathelp@agentmail.to?subject=Operator%20Money%20Kit%20waitlist">Join the waitlist</a>
+    </section>
+
+    <footer>
+      <p>
+        <a href="https://github.com/dmarzejon/money-kit">GitHub</a>
+        · <a href="https://github.com/dmarzejon/money-kit/blob/main/PRODUCT.md">PRODUCT.md</a>
+        · <a href="https://github.com/dmarzejon/money-kit/blob/main/lead-magnet.md">Free lead magnet</a>
+        · <a href="mailto:toolsthathelp@agentmail.to">toolsthathelp@agentmail.to</a>
+      </p>
+      <p style="margin-top: 0.5rem;">© 2026 Diego Marzejon · money-kit</p>
+    </footer>
+  </div>
+</body>
+</html>
